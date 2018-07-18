@@ -56,31 +56,34 @@ public class FXMLExampleController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		System.out.println("initializing...");
-
+		//set up the columns from the fxml to be bound to the record.property
 		colAssetId.setCellValueFactory(new PropertyValueFactory<Record, String>("assetId"));
 		colAssetName.setCellValueFactory(new PropertyValueFactory<Record, String>("assetName"));
 		colStatus.setCellValueFactory(new PropertyValueFactory<Record, String>("status"));
 		colEndDate.setCellValueFactory(new PropertyValueFactory<Record, String>("endDate"));
 		
+		//holds records to be put into the tableview
 		ObservableList<Record> data;
-
 		data = FXCollections.observableArrayList();
 
+		//get records from the database
 		ArrayList<Record> list = new ArrayList<Record>();
 		list = getItemsToAdd();
 		
+		//add records to the table
 		for (Record i : list) {
 			System.out.println("Add row: " + i);
 			data.add(i);
 		}
-		
 		tableView.setItems(data);
 	}
 
+	/**
+	 * connect to database and retrieve results 
+	 * @return ArrayList<Record>
+	 */
 	private ArrayList<Record> getItemsToAdd() {
 		ArrayList<Record> list = new ArrayList<Record>();
-
 		DbConnection myConn = new DbConnection();
 
 		myConn.getConnection();
@@ -88,31 +91,5 @@ public class FXMLExampleController implements Initializable {
 		myConn.connectionClose();
 		
 		return list;
-
-		/*
-		 * try { // build the table based on data received for (int i = 0; i <
-		 * rs.getMetaData().getColumnCount(); i++) { final int j = i; TableColumn<?, ?>
-		 * col = new TableColumn<Object, Object>(rs.getMetaData().getColumnName(i+1));
-		 * 
-		 * col.setCellValueFactory(new
-		 * Callback<TableColumn.CellDataFeatures<ObservableList,String>,ObservableValue<
-		 * String>>(){ public ObservableValue<String>
-		 * call(CellDataFeatures<ObservableList, String> param) { return new
-		 * SimpleStringProperty(param.getValue().get(j).toString()); } });
-		 * 
-		 * tableView.getColumns().addAll(col); }
-		 * 
-		 * // add the data to the table while (rs.next()) { ObservableList<String> row =
-		 * FXCollections.observableArrayList();
-		 * 
-		 * for (int i = 1; i < rs.getMetaData().getColumnCount(); i++) {
-		 * row.add(rs.getString(i)); } System.out.println("row added: " + row);
-		 * data.add(row); }
-		 * 
-		 * myConn.connectionClose(); } catch (SQLException e) { System.out.
-		 * println("Exception encountered trying to parse table and row data:");
-		 * e.printStackTrace(); }
-		 */
-
 	}
 }

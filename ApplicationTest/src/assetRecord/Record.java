@@ -2,7 +2,11 @@ package assetRecord;
 
 import java.sql.Date;
 
-
+/**
+ * pojo for database assets
+ * @author DAddariC
+ *
+ */
 public class Record {
 	private String assetId;
 	private String assetName;

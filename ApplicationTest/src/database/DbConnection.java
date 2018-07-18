@@ -25,6 +25,10 @@ public class DbConnection {
 
 	}
 	
+	/**
+	 * add database results to local record pojos and return arraylist
+	 * @return
+	 */
 	public ArrayList<Record> populateRecords() {
 		ArrayList<Record> list = new ArrayList<Record>();
 		Record i = null;
