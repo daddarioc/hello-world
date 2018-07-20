@@ -2,16 +2,21 @@ package assetRecord;
 
 import java.sql.Date;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 /**
  * pojo for database assets
  * @author DAddariC
  *
  */
 public class Record {
-	private String assetId;
-	private String assetName;
-	private String status;
-	private Date endDate;
+	private StringProperty assetId = new SimpleStringProperty();
+	private StringProperty assetName = new SimpleStringProperty();
+	private StringProperty status = new SimpleStringProperty();
+	private ObjectProperty<Date> endDate = new SimpleObjectProperty<>();
 
 	public Record(String assetId, String assetName, String status, Date endDate) {
 		setAssetId(assetId);
@@ -20,50 +25,62 @@ public class Record {
 		setEndDate(endDate);
 	}
 	
+
 	public String getAssetId() {
+		return assetId.get();
+	}
+
+
+	public void setAssetId(String assetId) {
+		this.assetId.set(assetId);
+	}
+
+	public StringProperty getAssetIdProperty() {
 		return assetId;
 	}
-
-
-	private void setAssetId(String assetId) {
-		this.assetId = assetId;
-	}
-
-
+	
 	public String getAssetName() {
+		return assetName.get();
+	}
+	
+	public StringProperty getAssetNameProperty() {
 		return assetName;
 	}
 
-
-	private void setAssetName(String assetName) {
-		this.assetName = assetName;
+	public void setAssetName(String assetName) {
+		this.assetName.set(assetName);
 	}
 
-
 	public String getStatus() {
+		return status.get();
+	}
+	
+	public StringProperty getStatusProperty() {
 		return status;
 	}
 
-
-	private void setStatus(String status) {
-		this.status = status;
+	public void setStatus(String status) {
+		this.status.set(status);
 	}
 
-
-	public String getEndDate() {
+	public void setEndDate(Date endDate) {
 		if (endDate != null) {
-			return endDate.toString();	
+			this.endDate.set(endDate);	
+		}
+	}
+
+	public Date getEndDate() {
+		if (endDate != null) {
+			return endDate.get();
 		}
 		else {
-			return "null";
+			return null;
 		}
 	}
 
-
-	private void setEndDate(Date endDate) {
-		this.endDate = endDate;
+	public ObjectProperty<Date> endDateProperty() {
+		return endDate;
 	}
-
 
 	public String toString() {
 		return assetId + ", " + assetName + ", " + status + ", " + endDate; 
