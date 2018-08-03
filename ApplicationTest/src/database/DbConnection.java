@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import assetRecord.Record;
+import javafx.util.Pair;
 
 public class DbConnection {
 	private Connection conn;
@@ -41,6 +42,46 @@ public class DbConnection {
 
 	public DbConnection() {
 
+	}
+	
+	/**
+	 * Return a list of areas from database
+	 * @return
+	 */
+	public ArrayList<Pair<Integer, String>> getAreas() {
+		ArrayList<Pair<Integer, String>> areaList = new ArrayList<Pair<Integer, String>>();
+		
+		String area = "";
+		String query = "SELECT *\r\n" +
+					   "FROM AM_AREA\r\n";
+		
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(query);
+			
+			while (rs.next()) {
+				areaList.add(new Pair(rs.getString(1), rs.getString(2)));
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			try { if (stmt != null) stmt.close(); } catch (SQLException e) {};
+			try { if (rs != null) rs.close(); } catch (SQLException e) {};
+		}
+		
+		return areaList;
+	}
+	
+	/**
+	 * Return a list of products from database
+	 * @return
+	 */
+	public ArrayList<String> getProducts() {
+		ArrayList<String> productList = new ArrayList<String>();
+		
+		return productList;
 	}
 	
 	/**
@@ -98,17 +139,17 @@ public class DbConnection {
 		}
 	}
 	
-	public Connection getConnection(String username, String password) {
+	public boolean getConnection(String username, String password) {
 		try {
 			String url = "jdbc:sqlserver://sqdatad99c03vc2;databaseName=ESEQA_Metrics;integratedSecurity=true;";
 			conn = DriverManager.getConnection(url, username, password);
-			
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+			return false;
 		}
 		System.out.println("login successful");
-		return conn;
+		return true;
 	}
 	
 }

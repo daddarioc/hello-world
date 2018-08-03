@@ -28,10 +28,12 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import dataModel.*;
 
 public class FXMLMainController implements Initializable {
 	private DbConnection myConn = new DbConnection();
-
+	private Model model;
+	
 	@FXML
 	private Font x1;
 
@@ -46,7 +48,7 @@ public class FXMLMainController implements Initializable {
 
 	@FXML
 	private void quit(ActionEvent event) {
-		myConn.connectionClose();
+		model.connection.connectionClose();
 		System.exit(0);
 	}
 
@@ -374,5 +376,12 @@ public class FXMLMainController implements Initializable {
 		//myConn.connectionClose();
 
 		return list;
+	}
+	
+	public void initModel(Model model) {
+		if (this.model != null) {
+			throw new IllegalStateException("Model can only be intialized once");
+		}
+		this.model = model;
 	}
 }

@@ -12,6 +12,7 @@ import javafx.scene.control.TextInputDialog;
 
 import utilities.*;
 import database.*;
+import dataModel.*;
 
 /**
  * Controller class for login window
@@ -19,7 +20,7 @@ import database.*;
  *
  */
 public class FXMLLoginController {
-	private DbConnection myConnection;
+	private Model model; 
 	
 	@FXML
 	private Button btnLogin;
@@ -32,17 +33,23 @@ public class FXMLLoginController {
 	
 	@FXML
 	private void connectDatabase(ActionEvent event) {
+		String sUsername = "";
+		String sPassword = "";
 		
 		while (true) {
-			String sUsername = username.getText();
-			String sPassword = password.getText();
+			sUsername = username.getText();
+			sPassword = password.getText();
 			
 			if (sUsername.isEmpty() || sPassword.isEmpty()) {
 				Alerts.showAlert(AlertType.ERROR, "Authentication Error", "Input a valid username and password.");
 				return;
 			}
-			
-			myConnection.getConnection(sUsername, sPassword);
+	
+			break;
+		}
+
+		model.connection.getConnection(sUsername, sPassword);
+		Navigator.loadWindow(Navigator.ASSET_PICKER);
 			/*
 			TextInputDialog userInput = new TextInputDialog();
 			userInput.setTitle("Input username");
@@ -63,38 +70,11 @@ public class FXMLLoginController {
 				return;
 			}
 			 */
-		}
-		
-		/*while (true) {
+
+
 			
-			TextInputDialog userInput = new TextInputDialog();
-			userInput.setTitle("Input password");
-			userInput.getDialogPane().setContentText("Password: ");
-			TextField tf = userInput.getEditor();
-			Optional<String> result = userInput.showAndWait();
-
-			if (result.isPresent()) {
-				// validate input
-				password = tf.getText();
-				if (!password.isEmpty()) {
-					break;
-				} else {
-					showAlert(AlertType.ERROR, "Input Error", "Input password");
-				}
-			} else {
-				// canceled
-				return;
-			}
-
-		}
-		
-		myConn.getConnection(username, password);
-		buildTable();*/
-/*
-		System.out.println("username: " + username);
-		System.out.println("password: " + password);
-*/
 	}
+	
 	/**
 	 * Handler fired when requesting new window
 	 * @param event
@@ -102,6 +82,13 @@ public class FXMLLoginController {
 	@FXML
 	void nextPane(ActionEvent event) {
 		Navigator.loadWindow(Navigator.ASSET_PICKER);
+	}
+	
+	public void initModel(Model model) {
+		if (this.model != null) {
+			throw new IllegalStateException("Model can only be intialized once");
+		}
+		this.model = model;
 	}
 	
 }
