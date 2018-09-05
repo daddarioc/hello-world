@@ -1,9 +1,0 @@
-model\Area.class
-view\ProductPickerController.class
-model\Asset.class
-view\LoginController.class
-view\AssetPickerController.class
-database\DbConnection.class
-application\MainApp.class
-model\Product.class
-application\Alerts.class

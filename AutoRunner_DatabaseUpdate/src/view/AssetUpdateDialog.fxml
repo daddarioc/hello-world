@@ -40,8 +40,8 @@
             </Label>
          </children>
       </GridPane>
-      <Button fx:id="btnFinish" layoutX="482.0" layoutY="320.0" mnemonicParsing="false" text="Finish" onAction="#buildSql" />
-      <Button fx:id="btnCancel" layoutX="407.0" layoutY="320.0" mnemonicParsing="false" text="Cancel" />
+      <Button fx:id="btnFinish" layoutX="482.0" layoutY="320.0" mnemonicParsing="false" text="Update Assets" onAction="#buildSql" />
+      <Button fx:id="btnCancel" layoutX="407.0" layoutY="320.0" mnemonicParsing="false" text="Cancel" onAction="#closeDialog"/>
       <Separator layoutX="14.0" layoutY="305.0" prefHeight="6.0" prefWidth="553.0" />
    </children>
 </AnchorPane>

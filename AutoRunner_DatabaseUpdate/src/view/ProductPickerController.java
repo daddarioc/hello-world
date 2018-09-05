@@ -23,7 +23,6 @@ public class ProductPickerController {
 	private MainApp mainApp;
 	private ObservableList<Area> areaData = FXCollections.observableArrayList();
 	private ObservableList<Product> productData = FXCollections.observableArrayList();
-	private int selectedProduct;
 	
 	@FXML
 	private ListView<Area> lstArea = new ListView<Area>();
@@ -38,21 +37,14 @@ public class ProductPickerController {
 		
 	}
 	
-	public int getSelectedProduct() {
-		return selectedProduct;
-	}
-
-	public void setSelectedProduct(int selectedProduct) {
-		this.selectedProduct = selectedProduct;
-	}	
 	
 	@FXML
 	private void showAssetPicker(ActionEvent event) {
-		//get the current product picked in the list
-		setSelectedProduct(lstProduct.getSelectionModel().getSelectedItem().getProductId());
+		//get and set the current product picked in the list in mainApp
+		mainApp.setSelectedProduct(lstProduct.getSelectionModel().getSelectedItem().getProductId());
 		
 		//get the assets from the database that correspond to the product
-		mainApp.setAssetData(AssetOperations.retrieveDbAssets(mainApp.getConnection(), getSelectedProduct()));
+		mainApp.setAssetData(AssetOperations.retrieveDbAssets(mainApp.getConnection(), mainApp.getSelectedProduct()));
 		
 		//show the asset selection screen
 		mainApp.showAssetPicker();

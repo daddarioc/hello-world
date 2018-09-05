@@ -19,7 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import model.Area;
+import javafx.stage.Stage;
 import model.Asset;
 
 public class AssetUpdateController {
@@ -44,6 +44,7 @@ public class AssetUpdateController {
 	@FXML
 	private ComboBox<String> cmbNewStatus;
 	
+	private Stage dialogStage;
 	
 	public void setMainApp(MainApp mainApp) {
 		//set the model to here
@@ -52,6 +53,23 @@ public class AssetUpdateController {
 		lblAssetCount.setText(size);
 	}
 	
+    /**
+     * Called when the user clicks cancel.
+     */
+    @FXML
+    private void closeDialog() {
+        dialogStage.close();
+    }
+    
+    /**
+     * Sets the stage of this dialog.
+     * 
+     * @param dialogStage
+     */
+    public void setDialogStage(Stage dialogStage) {
+        this.dialogStage = dialogStage;
+    }
+    
 	@FXML
 	private void initialize() {
 		ZoneId zoneId = ZoneId.of("America/Montreal");
@@ -140,6 +158,8 @@ public class AssetUpdateController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			closeDialog();
 		}
 		
 

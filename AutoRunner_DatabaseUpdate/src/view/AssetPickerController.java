@@ -10,6 +10,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import model.Asset;
+import model.AssetOperations;
 
 public class AssetPickerController {
 	//reference to main application
@@ -17,6 +18,9 @@ public class AssetPickerController {
 	
 	@FXML
 	private Button btnNewVersion;
+	
+	@FXML
+	private Button btnBack;
 	
 	@FXML
 	private ListView<Asset> lstAssets = new ListView<Asset>();
@@ -41,20 +45,30 @@ public class AssetPickerController {
 	}
 	
 	/**
-	 * Perform a new version operation on the asset (end-date, choose a new start date and status for a new row insert of the copied asset
+	 * Perform a new version operation on the asset (end-date, choose a new start date and status for a new row insert of the copied asset)
 	 */
 	@FXML
 	private void assetNewVersion() {
 		//get the selected rows
-		this.mainApp.setAssetsToUpdate(tblAssets.getSelectionModel().getSelectedItems());
+		mainApp.setAssetsToUpdate(tblAssets.getSelectionModel().getSelectedItems());
 		
-		//show the update screen
-		this.mainApp.showAssetUpdateDialog();
+		//show the update dialog for any changes to be made
+		mainApp.showAssetUpdateDialog();
+		
+		//get the assets from the database that correspond to the product, and refresh the table
+		mainApp.setAssetData(AssetOperations.retrieveDbAssets(mainApp.getConnection(), mainApp.getSelectedProduct()));
+		tblAssets.getItems().clear();
+		tblAssets.getItems().addAll(mainApp.getAssetData());
+	}
+	
+	@FXML
+	private void showProductPicker() {
+		mainApp.showProductPicker();
 	}
 	
 	@FXML
 	private void initialize() {
-		//tie all of the columns to the asset data
+		//tie all of the columns to the asset property data
 		colAssetId.setCellValueFactory(cellData -> cellData.getValue().getAssetIdProperty());
 		colAssetName.setCellValueFactory(cellData -> cellData.getValue().getAssetNameProperty());
 		colStatus.setCellValueFactory(cellData -> cellData.getValue().getStatusProperty());
@@ -71,4 +85,5 @@ public class AssetPickerController {
 		//populate the table with asset rows
 		tblAssets.setItems(mainApp.getAssetData());
 	}
+	
 }

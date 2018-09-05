@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Asset;
 import view.AssetPickerController;
@@ -34,6 +35,7 @@ public class MainApp extends Application {
 	public ObservableList<Asset> assetsToUpdate = FXCollections.observableArrayList();
 	
 	private Connection conn;
+	private int selectedProduct;
 	
 	/**
 	 * Initial loading of the application, called by main()
@@ -166,11 +168,26 @@ public class MainApp extends Application {
             loader.setLocation(MainApp.class.getResource("/view/AssetUpdateDialog.fxml"));
             AnchorPane update = (AnchorPane) loader.load();
             
-            // Set picker into the center of root layout.
-            rootLayout.setCenter(update);
-            
+            // Create the dialog Stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Update Assets");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(update);
+            dialogStage.setScene(scene);
+ 
             AssetUpdateController updateController = loader.getController();
+            updateController.setDialogStage(dialogStage);
             updateController.setMainApp(this);
+            
+            dialogStage.showAndWait();
+            
+            //following is the non-modal way of just painting the regular pane 
+            // Set picker into the center of root layout.
+            //rootLayout.setCenter(update);
+            
+            //AssetUpdateController updateController = loader.getController();
+            //updateController.setMainApp(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -191,6 +208,14 @@ public class MainApp extends Application {
 	public void setAssetData(ObservableList<Asset> assetData) {
 		this.assetData = assetData;
 	}
+	
+	public int getSelectedProduct() {
+		return selectedProduct;
+	}
+
+	public void setSelectedProduct(int selectedProduct) {
+		this.selectedProduct = selectedProduct;
+	}	
 	
 	/**
 	 * Establish connection to database, return Connection
