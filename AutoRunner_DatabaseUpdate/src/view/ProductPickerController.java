@@ -15,6 +15,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import model.Area;
 import model.Asset;
+import model.AssetOperations;
 import model.Product;
 
 public class ProductPickerController {
@@ -22,7 +23,8 @@ public class ProductPickerController {
 	private MainApp mainApp;
 	private ObservableList<Area> areaData = FXCollections.observableArrayList();
 	private ObservableList<Product> productData = FXCollections.observableArrayList();
-		
+	private int selectedProduct;
+	
 	@FXML
 	private ListView<Area> lstArea = new ListView<Area>();
 	
@@ -36,9 +38,23 @@ public class ProductPickerController {
 		
 	}
 	
+	public int getSelectedProduct() {
+		return selectedProduct;
+	}
+
+	public void setSelectedProduct(int selectedProduct) {
+		this.selectedProduct = selectedProduct;
+	}	
+	
 	@FXML
 	private void showAssetPicker(ActionEvent event) {
-		getAssets();
+		//get the current product picked in the list
+		setSelectedProduct(lstProduct.getSelectionModel().getSelectedItem().getProductId());
+		
+		//get the assets from the database that correspond to the product
+		mainApp.setAssetData(AssetOperations.retrieveDbAssets(mainApp.getConnection(), getSelectedProduct()));
+		
+		//show the asset selection screen
 		mainApp.showAssetPicker();
 	}
 	
@@ -130,7 +146,7 @@ public class ProductPickerController {
 	/**
 	 * Load assets from data base into main model.assetData
 	 */
-	public void getAssets() {
+	/*public void getAssets() {
 		Connection conn = mainApp.getConnection();
 		String query = "select AUTO_ASSET_ID, ASSET_NAME, STATUS_ID_FK, END_DATE\r\n" + 
 					   "from AM_AUTO_ASSET\r\n" +
@@ -160,7 +176,7 @@ public class ProductPickerController {
 			try { if (rs != null) rs.close(); } catch (SQLException e) {};
 		}
 
-	}
+	}*/
 
 	
 	public void setMainApp(MainApp mainApp) {

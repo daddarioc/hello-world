@@ -1,6 +1,10 @@
 package model;
 
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -86,13 +90,5 @@ public class Asset {
 
 	public String toString() {
 		return assetName.get(); 
-	}
-
-	public static ObservableList<Asset> retrieveDbAssets(int product) {
-		ObservableList<Asset> assets = FXCollections.observableArrayList();
-		
-		
-		
-		return assets;
 	}
 }

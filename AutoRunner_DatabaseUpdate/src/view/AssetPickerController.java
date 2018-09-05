@@ -69,6 +69,6 @@ public class AssetPickerController {
 		this.mainApp = mainApp;
 		
 		//populate the table with asset rows
-		tblAssets.setItems(mainApp.assetData);
+		tblAssets.setItems(mainApp.getAssetData());
 	}
 }

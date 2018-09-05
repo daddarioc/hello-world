@@ -28,16 +28,12 @@ public class MainApp extends Application {
 	private BorderPane rootLayout;
 	
 	//contains assets from a given product to load into the tableview
-	public ObservableList<Asset> assetData = FXCollections.observableArrayList();
+	private ObservableList<Asset> assetData = FXCollections.observableArrayList();
 	
 	//contains assets selected from tableview to be updated in the database
 	public ObservableList<Asset> assetsToUpdate = FXCollections.observableArrayList();
 	
 	private Connection conn;
-	private ResultSet rs;
-	private Statement stmt;
-	
-	
 	
 	/**
 	 * Initial loading of the application, called by main()
@@ -188,11 +184,11 @@ public class MainApp extends Application {
 		this.assetsToUpdate = assetsToUpdate;
 	}
 
-	private ObservableList<Asset> getAssetData() {
+	public ObservableList<Asset> getAssetData() {
 		return assetData;
 	}
 
-	private void setAssetData(ObservableList<Asset> assetData) {
+	public void setAssetData(ObservableList<Asset> assetData) {
 		this.assetData = assetData;
 	}
 	
