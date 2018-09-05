@@ -31,7 +31,7 @@ public class FXMLAssetPickerController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		try {
-			ArrayList<Pair<Integer, String>> areaList = model.connection.getAreas();	
+				
 		}
 		catch (Exception e) {
 			System.out.println("something went boom trying to get areas");
