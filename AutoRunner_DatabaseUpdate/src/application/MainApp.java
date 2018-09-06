@@ -12,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -47,7 +48,9 @@ public class MainApp extends Application {
 			this.primaryStage.setTitle("AutoRunner Database Update");
 			
 			initRootLayout();
-			showLogin();
+			//showLogin();
+			//connectDatabase();
+			showProductPicker();
 			
 		/*	Default javafx project setup
 		 * BorderPane root = new BorderPane();
@@ -75,6 +78,22 @@ public class MainApp extends Application {
 		}
 	}
 	
+	private void connectDatabase() {
+		try {
+			String username = "";
+			String password = "";
+			Connection conn = null;
+	
+			connectToDatabase(username, password);
+			conn = getConnection();
+			setConnection(conn);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			Alerts.showAlert(AlertType.ERROR, "Fatal Error", "Authentication problem. Exception:\n" + e.getMessage());
+			System.exit(0);
+		}
+	}
 	/**
      * Initializes the root layout.
      */
@@ -129,6 +148,7 @@ public class MainApp extends Application {
             rootLayout.setCenter(login);
             
             ProductPickerController pickerController = loader.getController();
+            connectDatabase();
             pickerController.setMainApp(this);
             pickerController.getAreas();
             pickerController.getProducts();

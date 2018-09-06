@@ -2,6 +2,7 @@ package view;
 
 import java.sql.Date;
 
+import application.Alerts;
 import application.MainApp;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,6 +10,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
 import model.Asset;
 import model.AssetOperations;
 
@@ -49,16 +51,22 @@ public class AssetPickerController {
 	 */
 	@FXML
 	private void assetNewVersion() {
-		//get the selected rows
-		mainApp.setAssetsToUpdate(tblAssets.getSelectionModel().getSelectedItems());
-		
-		//show the update dialog for any changes to be made
-		mainApp.showAssetUpdateDialog();
-		
-		//get the assets from the database that correspond to the product, and refresh the table
-		mainApp.setAssetData(AssetOperations.retrieveDbAssets(mainApp.getConnection(), mainApp.getSelectedProduct()));
-		tblAssets.getItems().clear();
-		tblAssets.getItems().addAll(mainApp.getAssetData());
+		if (tblAssets.getSelectionModel().getSelectedItems().size() == 0) {
+			Alerts.showAlert(AlertType.ERROR, "Error", "Select an asset(s) to proceed.");
+			return;
+		}
+		else {
+			// get the selected rows
+			mainApp.setAssetsToUpdate(tblAssets.getSelectionModel().getSelectedItems());
+
+			// show the update dialog for any changes to be made
+			mainApp.showAssetUpdateDialog();
+
+			// get the assets from the database that correspond to the product, and refresh the table
+			mainApp.setAssetData(AssetOperations.retrieveDbAssets(mainApp.getConnection(), mainApp.getSelectedProduct()));
+			tblAssets.getItems().clear();
+			tblAssets.getItems().addAll(mainApp.getAssetData());
+		}
 	}
 	
 	@FXML

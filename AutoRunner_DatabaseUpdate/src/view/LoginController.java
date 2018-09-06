@@ -22,6 +22,7 @@ import dataModel.*;
  * @author DAddariC
  *
  */
+@Deprecated //CD 9/5/18 - This isn't needed right now as SQL Server we're using is using integrated authentication in Windows
 public class LoginController {
 	// private Model model; this was for the multi-pane version of the app...tbd if
 	// needed
@@ -71,11 +72,25 @@ public class LoginController {
 	 */
 	@FXML
 	private void connectDatabase(ActionEvent event) {
-		String sUsername = "";
-		String sPassword = "";
-		Connection conn = null;
-
-		while (true) {
+		try {
+			String sUsername = "";
+			String sPassword = "";
+			Connection conn = null;
+	
+			mainApp.connectToDatabase(sUsername, sPassword);
+			conn = mainApp.getConnection();
+			mainApp.setConnection(conn);
+			mainApp.showProductPicker();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			Alerts.showAlert(AlertType.ERROR, "Fatal Error", "Authentication problem. Exception:\n" + e.getMessage());
+			System.exit(0);
+		}
+		
+		
+		/* CD 9/5/18 - Older user authentication code, probably need this for Mac/linux.
+		 * while (true) {
 			sUsername = username.getText();
 			sPassword = password.getText();
 
@@ -99,8 +114,9 @@ public class LoginController {
 			}
 
 		}
-
 		mainApp.showProductPicker();
+*/
+		
 
 		/*
 		 * model.connection.getConnection(sUsername, sPassword);

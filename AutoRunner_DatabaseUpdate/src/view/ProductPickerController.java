@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import application.Alerts;
 import application.MainApp;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import model.Area;
 import model.Asset;
@@ -37,27 +39,30 @@ public class ProductPickerController {
 		
 	}
 	
+
 	
 	@FXML
 	private void showAssetPicker(ActionEvent event) {
-		//get and set the current product picked in the list in mainApp
-		mainApp.setSelectedProduct(lstProduct.getSelectionModel().getSelectedItem().getProductId());
-		
-		//get the assets from the database that correspond to the product
-		mainApp.setAssetData(AssetOperations.retrieveDbAssets(mainApp.getConnection(), mainApp.getSelectedProduct()));
-		
-		//show the asset selection screen
-		mainApp.showAssetPicker();
+		// make sure a product is selected before proceeding
+		if (lstProduct.getSelectionModel().getSelectedItems().size() == 0) {
+			Alerts.showAlert(AlertType.ERROR, "Error", "Select a product to proceed.");
+			return;
+		} else {
+			// get and set the current product picked in the list in mainApp
+			mainApp.setSelectedProduct(lstProduct.getSelectionModel().getSelectedItem().getProductId());
+
+			// get the assets from the database that correspond to the product
+			mainApp.setAssetData(AssetOperations.retrieveDbAssets(mainApp.getConnection(), mainApp.getSelectedProduct()));
+
+			// show the asset selection pane
+			mainApp.showAssetPicker();
+		}
 	}
 	
 	@FXML
 	private void initialize() {
-		//get all the window specific stuff done in here, like setting up columns grids etc.
-		//ArrayList<Pair<Integer, String>> areaList = model.connection.getAreas();
-		
-		//load area and product lists
+		//load area listview
 		lstArea.setItems(areaData);
-		//lstProduct.setItems(productData);
 	}
 	
 	
